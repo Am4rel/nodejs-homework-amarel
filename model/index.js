@@ -29,7 +29,7 @@ const getContactById = async (contactId) => {
 const removeContactById = async (contactId) => {
   try {
       const contacts = await listContacts();
-      const contactToDelete = contacts.filter(contact => contact.id === parseInt(contactId));
+      const contactToDelete = contacts.find(contact => contact.id === parseInt(contactId));
 
       if (!contactToDelete){
         return null;
@@ -70,8 +70,9 @@ const updateContactById = async (contactId, body) => {
 
     const updatedContact = {...contact, ...body};
 
-    const contactsToRewrite = contacts.filter(contact => contact.id !== parseInt(contactId));
-    const newContacts = [...contactsToRewrite, updatedContact];
+    const newContacts = contacts.map((contact) => {
+      return contact.id === parseInt(contactId) ? {...contact, ...body} : contact;
+    });
           
     await updateContacts(contactsPath, newContacts);
     
