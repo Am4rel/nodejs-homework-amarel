@@ -1,7 +1,7 @@
 const Joi = require("joi");
 
 const emailRegexp = new RegExp("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
-const phoneRegexp = new RegExp("^([0-9]{3})\s[0-9]{3}-[0-9]{4}");
+const phoneRegexp = new RegExp("^[(][0-9]{3}[)] [0-9]{3}[-][0-9]{4}$");
 
 const contactAddScheme = Joi.object({
     name: Joi.string().required(),
