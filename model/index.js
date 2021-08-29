@@ -11,18 +11,24 @@ const listContacts = async () => {
 };
 
 const getContactById = async (contactId) => {
-  try {
-      const neededContact = Contact.find({_id: contactId})
-      
-      return neededContact;
-  } catch (error) {
-      throw error;        
-  };
+  const neededContact = Contact.findOne({_id: contactId}).then(result => {
+    if (result){
+      return result
+    }else{
+      return null
+    }
+  }).catch(_ => null)
+
+  return neededContact;
 };
 
 const removeContactById = async (contactId) => {
   try {
       const deletedContact = await getContactById(contactId);
+
+      if (!deletedContact){
+        return null;
+      }
 
       await Contact.deleteOne({_id: contactId})
       
@@ -38,12 +44,24 @@ const addContact = async (body) => {
 
     return newContact;
   } catch (error) {
-      throw error;
+    const {message} = error;
+    
+    if (message.indexOf("duplicate") !== -1){
+      return null;
+    };
+    
+    throw error;
   };
 };
 
 const updateContactById = async (contactId, body) => {
   try {
+    const contact = await getContactById(contactId);
+
+    if (!contact){
+      return null;
+    }
+
     await Contact.updateOne({_id: contactId}, body);
     const newContact = await getContactById(contactId);
     
@@ -58,7 +76,11 @@ const updateFav = async (contactId, body) => {
     const {favorite} = body;
 
     const contact = await getContactById(contactId);
-
+    
+    if (!contact){
+      return null;
+    }
+    
     await Contact.updateOne({_id: contactId}, {favorite});
     return {...contact._doc, favorite};
   } catch (error) {
