@@ -10,6 +10,8 @@ router.post('/', ctrl.add);
 
 router.delete('/:contactId', ctrl.deleteById);
 
+router.put('/:contactId/favorites', ctrl.updateFav);
+
 router.put('/:contactId', ctrl.updateContact);
 
 module.exports = router

@@ -15,6 +15,12 @@ const addContact = async (req, res, next) => {
 
         const newContact = await apiFunctions.addContact(body);
 
+        if (!newContact){
+            return res.status(400).json({
+                message: 'This email is already registered',
+            })
+        }
+
         return res.json({
             message: 'Contact was succesfully added.',
             data: newContact
