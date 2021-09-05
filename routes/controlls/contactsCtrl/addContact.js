@@ -1,5 +1,5 @@
-const apiFunctions = require('../../model');
-const schemas = require('../../joiSchemas/contactJoiScheme');
+const apiFunctions = require('../../../model/contacts');
+const schemas = require('../../../joiSchemas/contactJoiScheme');
 
 const addContact = async (req, res, next) => {
     try {
@@ -9,7 +9,9 @@ const addContact = async (req, res, next) => {
         if (error){
             const {message} = error;
             return res.status(400).json({
-                message
+                status: "Error",
+                code: 400,
+                message,
             })
         };
 
@@ -17,12 +19,15 @@ const addContact = async (req, res, next) => {
 
         if (!newContact){
             return res.status(400).json({
+                status: "Error",
+                code: 400,
                 message: 'This email is already registered',
             })
         }
 
         return res.json({
             message: 'Contact was succesfully added.',
+            code: 201,
             data: newContact
         })
     } catch (error) {

@@ -1,4 +1,4 @@
-const apiFunctions = require('../../model');
+const apiFunctions = require('../../../model/contacts');
 
 const deleteContact = async (req, res, next) => {
     try {
@@ -7,11 +7,15 @@ const deleteContact = async (req, res, next) => {
 
         if (!deletedContact){
             return res.status(404).json({
+                status: "Error",
+                code: 404,
                 message: `Contact with id ${contactId} not found.`
             })
         };
 
         return res.json({
+            status: "Success",
+            code: 200,
             message: `Contact with id ${contactId} succesfully deleted.`,
             data: deletedContact
         })

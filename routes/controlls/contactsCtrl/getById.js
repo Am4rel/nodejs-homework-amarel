@@ -1,4 +1,4 @@
-const apiFunctions = require('../../model');
+const apiFunctions = require('../../../model/contacts');
 
 const getById = async (req, res, next) => {
     try {
@@ -12,7 +12,8 @@ const getById = async (req, res, next) => {
         }
 
         res.json({
-            message: "Success",
+            status: "Success",
+            code: 200,
             data: contact
         });
     } catch (error) {

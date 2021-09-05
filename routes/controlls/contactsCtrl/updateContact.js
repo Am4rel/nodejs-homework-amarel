@@ -1,5 +1,5 @@
-const apiFunctions = require('../../model');
-const schemas = require('../../joiSchemas/contactJoiScheme');
+const apiFunctions = require('../../../model/contacts');
+const schemas = require('../../../joiSchemas/contactJoiScheme');
 
 const updateContact = async (req, res, next) => {
     try {
