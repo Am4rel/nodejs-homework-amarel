@@ -1,6 +1,6 @@
 const apiFunctions = require('../../../model/users');
 
-const updateSub = async (req, res, next) => {
+const updateSubscription = async (req, res, next) => {
     try {
         const {_id} = req.user;
         const {subscription} = req.body;
@@ -31,4 +31,4 @@ const updateSub = async (req, res, next) => {
     };
 };
 
-module.exports = updateSub;
+module.exports = updateSubscription;

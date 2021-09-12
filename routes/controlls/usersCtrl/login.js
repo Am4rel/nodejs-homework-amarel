@@ -10,15 +10,8 @@ const {SECRET_WORD} = process.env;
 const login = async (req, res, next) => {
     try {
         const body = req.body;
-        const {error} = schemas.signupScheme.validate(body);
+        const {email, password} = body;
 
-        if (error){
-            return res.status(400).json({
-                message: "Validation error: email or password does't match the requirements.",
-            });
-        };
-
-        const {email, password} = req.body;
         const registeredUser = await apiFunctions.getByEmail(email);
 
         if (!registeredUser){
@@ -27,10 +20,18 @@ const login = async (req, res, next) => {
             });
         }
 
-        const id = registeredUser._id;
-        const passIdent = bcrypt.compareSync(password, registeredUser.password);
+        const {error} = schemas.signupScheme.validate(body);
 
-        if (!passIdent){
+        if (error){
+            return res.status(400).json({
+                message: "Validation error: email or password does't match the requirements.",
+            });
+        };
+
+        const id = registeredUser._id;
+        const isPasswordMatch = bcrypt.compareSync(password, registeredUser.password);
+
+        if (!isPasswordMatch){
             return res.status(400).json({
                 message: "Wrong password.",
             });

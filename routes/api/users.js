@@ -12,7 +12,7 @@ router.post('/signup', ctrl.signup);
 
 router.get('/current', tokenCheck, ctrl.getUser);
 
-router.patch('/', tokenCheck, ctrl.updateSub);
+router.patch('/', tokenCheck, ctrl.updateSubscription);
 
 // router.put('/:contactId', ctrl.updateContact);
 
