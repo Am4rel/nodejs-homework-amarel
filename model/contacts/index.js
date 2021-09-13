@@ -1,4 +1,4 @@
-const {Contact} = require("./schemas");
+const {Contact} = require("../schemas");
 
 const listContacts = async () => {
   try {

@@ -1,17 +1,18 @@
 const express = require('express')
-const ctrl = require('../controlls');
+const ctrl = require('../controlls/contactsCtrl');
+const {tokenCheck} = require("../../middlewares");
 const router = express.Router()
 
-router.get('/', ctrl.getAll);
+router.get('/', tokenCheck, ctrl.getAll);
 
-router.get('/:contactId', ctrl.getById);
+router.get('/:contactId', tokenCheck, ctrl.getById);
 
-router.post('/', ctrl.add);
+router.post('/', tokenCheck, ctrl.add);
 
-router.delete('/:contactId', ctrl.deleteById);
+router.delete('/:contactId', tokenCheck, ctrl.deleteById);
 
-router.put('/:contactId/favorites', ctrl.updateFav);
+router.put('/:contactId/favorites', tokenCheck, ctrl.updateFav);
 
-router.put('/:contactId', ctrl.updateContact);
+router.put('/:contactId', tokenCheck, ctrl.updateContact);
 
 module.exports = router
