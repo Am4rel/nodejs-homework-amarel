@@ -1,8 +1,12 @@
 const bcrypt = require("bcryptjs");
+const gravatar = require('gravatar');
+const path = require("path");
+const fs = require("fs/promises");
 
 const apiFunctions = require('../../../model/users');
 const schemas = require('../../../joiSchemas/userJoiScheme');
 
+const avatarDir = path.join(__dirname, "../../../", "public/avatars");
 
 const signup = async (req, res, next) => {
     try {
@@ -15,7 +19,7 @@ const signup = async (req, res, next) => {
             });
         };
 
-        const {email, password} = req.body;
+        const {email, password, subscription} = req.body;
         const registeredUser = await apiFunctions.getByEmail(email);
 
         if (registeredUser){
@@ -25,13 +29,18 @@ const signup = async (req, res, next) => {
         }
 
         const cryptedPass = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-        const userData = {email, password: cryptedPass}
+        const image = gravatar.url(email, {s: "200"}, true);
+        const userData = {email, password: cryptedPass, avatarURL: image, subscription};
 
-        const {email: userEmail, _id: userId, subscription: userSub} = await apiFunctions.signup(userData);
+        const {email: userEmail, _id: userId, subscription: userSub, avatarURL} = await apiFunctions.signup(userData);
+        
+        const userDirPath = path.join(avatarDir, userId.toString());
+        await fs.mkdir(userDirPath);
+        
         return res.status(201).json({
             status: "Signup success, user registered.",
             code: 201,
-            data: {userId, userEmail, userSub},
+            data: {userId, userEmail, userSub, avatarURL},
         })
     } catch (error) {
         next(error)

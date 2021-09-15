@@ -36,11 +36,15 @@ const user = mongoose.Schema({
     subscription: {
       type: String,
       enum: ["starter", "pro", "business"],
-      default: "starter"
+      default: "starter",
     },
     token: {
       type: String,
       default: null,
+    },
+    avatarURL: {
+      type: String,
+      default: "",
     },
 }, {versionKey: false, timestamps: true});
 
