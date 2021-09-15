@@ -6,6 +6,7 @@ const signupScheme = Joi.object({
     email: Joi.string().pattern(emailRegexp).required(),
     password: Joi.string().min(3).required(),
     subscription: Joi.string(),
+    avatarURL: Joi.string(),
 });
 
 const loginScheme = Joi.object({

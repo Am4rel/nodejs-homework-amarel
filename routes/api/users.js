@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const {tokenCheck} = require("../../middlewares");
+const {tokenCheck, imageUploader} = require("../../middlewares");
 const ctrl = require('../controlls/usersCtrl');
 
 router.post('/login', ctrl.login);
@@ -14,6 +14,6 @@ router.get('/current', tokenCheck, ctrl.getUser);
 
 router.patch('/', tokenCheck, ctrl.updateSubscription);
 
-// router.put('/:contactId', ctrl.updateContact);
+router.patch('/avatars', tokenCheck, imageUploader.single("avatar"), ctrl.updateAvatar);
 
 module.exports = router
