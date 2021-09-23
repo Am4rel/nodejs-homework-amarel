@@ -2,9 +2,11 @@ const bcrypt = require("bcryptjs");
 const gravatar = require('gravatar');
 const path = require("path");
 const fs = require("fs/promises");
+const {v4} = require("uuid");
 
 const apiFunctions = require('../../../model/users');
 const schemas = require('../../../joiSchemas/userJoiScheme');
+const {sendEmail} = require("../../../utils");
 
 const avatarDir = path.join(__dirname, "../../../", "public/avatars");
 
@@ -30,7 +32,10 @@ const signup = async (req, res, next) => {
 
         const cryptedPass = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
         const image = gravatar.url(email, {s: "200"}, true);
-        const userData = {email, password: cryptedPass, avatarURL: image, subscription};
+        const verifyToken = v4();
+        const userData = {email, password: cryptedPass, avatarURL: image, subscription, verifyToken};
+
+        sendEmail(email, verifyToken);
 
         const {email: userEmail, _id: userId, subscription: userSub, avatarURL} = await apiFunctions.signup(userData);
         
@@ -38,7 +43,7 @@ const signup = async (req, res, next) => {
         await fs.mkdir(userDirPath);
         
         return res.status(201).json({
-            status: "Signup success, user registered.",
+            status: "Signup success, user registered, verification email sent.",
             code: 201,
             data: {userId, userEmail, userSub, avatarURL},
         })

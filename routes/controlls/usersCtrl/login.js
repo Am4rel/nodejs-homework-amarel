@@ -28,7 +28,16 @@ const login = async (req, res, next) => {
             });
         };
 
-        const id = registeredUser._id;
+        const {_id: id, verify} = registeredUser;
+
+        if (!verify){
+            return res.status(403).json({
+                status: "Error",
+                code: 403,
+                message: "You need to verify your email first"
+            });
+        };
+
         const isPasswordMatch = bcrypt.compareSync(password, registeredUser.password);
 
         if (!isPasswordMatch){
