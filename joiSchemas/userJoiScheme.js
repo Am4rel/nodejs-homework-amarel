@@ -7,6 +7,8 @@ const signupScheme = Joi.object({
     password: Joi.string().min(3).required(),
     subscription: Joi.string(),
     avatarURL: Joi.string(),
+    verify: Joi.boolean(),
+    verifyToken: Joi.string(),
 });
 
 const loginScheme = Joi.object({
